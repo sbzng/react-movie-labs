@@ -4,5 +4,8 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.14",
     "@mui/material": "^5.14.14"
+  },
+  "devDependencies": {
+    "cypress": "^13.3.3"
   }
 }
