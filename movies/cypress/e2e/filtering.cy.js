@@ -37,30 +37,46 @@ describe("Filtering", () => {
       cy.get(".MuiCardHeader-content").should("have.length", 0);
     });
   });
-    
- 
 
-    describe("Combined genre and title", () => {
-      // TODO
-    });
 
-    describe("By movie genre", () => {
-      it("show movies with the selected genre", () => {
-        const selectedGenreId = 18;
-        const selectedGenreText = "Drama";
-        const matchingMovies = filterByGenre(movies, selectedGenreId);
-        cy.get("#genre-select").click();
-        cy.get("li").contains(selectedGenreText).click();
-        cy.get(".MuiCardHeader-content").should(
-          "have.length",
-          matchingMovies.length
-        );
-        cy.get(".MuiCardHeader-content").each(($card, index) => {
-          cy.wrap($card).find("p").contains(matchingMovies[index].title);
-        });
+  describe("By movie genre", () => {
+    it("show movies with the selected genre", () => {
+      const selectedGenreId = 18;
+      const selectedGenreText = "Drama";
+      const matchingMovies = filterByGenre(movies, selectedGenreId);
+      cy.get("#genre-select").click();
+      cy.get("li").contains(selectedGenreText).click();
+      cy.get(".MuiCardHeader-content").should(
+        "have.length",
+        matchingMovies.length
+      );
+      cy.get(".MuiCardHeader-content").each(($card, index) => {
+        cy.wrap($card).find("p").contains(matchingMovies[index].title);
       });
     });
-
   });
 
+  describe("Combined genre and title", () => {
+    it("show movies with selected title and genre", () => {
+      const selectedGenreId = 18;  
+      const selectedGenreText = "Drama"; 
+      const searchString = "m"; 
 
+      const genreFilteredMovies = filterByGenre(movies, selectedGenreId);
+      const matchingMovies = filterByTitle(genreFilteredMovies, searchString);
+
+      cy.get("#genre-select").click();
+      cy.get("li").contains(selectedGenreText).click();
+
+      cy.get("#filled-search").clear().type(searchString);
+
+      cy.get(".MuiCardHeader-content").should("have.length", matchingMovies.length);
+
+      
+      cy.get(".MuiCardHeader-content").each(($card, index) => {
+        cy.wrap($card).find("p").contains(matchingMovies[index].title);
+      });
+    });
+  });
+
+});
