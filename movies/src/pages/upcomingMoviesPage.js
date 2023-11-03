@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PageTemplate from '../components/templateMovieListPage'
 import { getUpcomingMovies } from "../api/tmdb-api";
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import { useQuery } from 'react-query';
+import Spinner from '../components/spinner';
 
 const UpcomingMoviesPage = () => {
-    const [movies, setMovies] = useState([]);
-
-    useEffect(() => {
-        getUpcomingMovies().then((movies) => {
-            setMovies(movies);
-        });
-    }, []);
+    const { data, error, isLoading, isError } = useQuery('discover', getUpcomingMovies)
+    if (isLoading) {
+        return <Spinner />
+    }
+    if (isError) {
+        return <h1>{error.message}</h1>;
+    }
+    const movies = data.results;
 
     return (
         <PageTemplate
@@ -18,7 +21,7 @@ const UpcomingMoviesPage = () => {
             movies={movies}
             action={(movie) => {
                 return <PlaylistAddIcon movie={movie} />
-              }}
+            }}
         />
     );
 };
