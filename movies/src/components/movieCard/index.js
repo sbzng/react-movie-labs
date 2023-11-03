@@ -85,4 +85,4 @@ export default function MovieCard({ movie, action }) {
       
     </Card>
   );
-}
+};
