@@ -20,7 +20,7 @@ const MoviesContextProvider = (props) => {
     setMyReviews({ ...myReviews, [movie.id]: review })
   };
   //console.log(myReviews);
-  
+
   // We will use this function in a later section
   const removeFromFavorites = (movie) => {
     setFavorites(favorites.filter(
@@ -42,6 +42,7 @@ const MoviesContextProvider = (props) => {
       {props.children}
     </MoviesContext.Provider>
   );
+  
 };
 
 export default MoviesContextProvider;
