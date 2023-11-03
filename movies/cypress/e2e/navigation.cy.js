@@ -51,43 +51,43 @@ describe("Navigation", () => {
     });
 
     describe("From the favourites page to a movie's details", () => {
-      
-            context("When there are movies in the favourites", () => {
-                beforeEach(() => {
-                    cy.get("button[aria-label='add to favorites']").eq(0).click();
-                    cy.get("button").contains("Favorites").click();
-                });
-                it("navigates from Favourites to movie details page directly", () => {
-                   
-                    cy.get(".MuiCardActions-root").eq(0).contains("More Info").click();
-                    cy.url().should("include", `/movies/${movies[0].id}`);
-                });
+
+        context("When there are movies in the favourites", () => {
+            beforeEach(() => {
+                cy.get("button[aria-label='add to favorites']").eq(0).click();
+                cy.get("button").contains("Favorites").click();
             });
+            it("navigates from Favourites to movie details page directly", () => {
 
-            context("When there are no movies in the favourites", () => {
-                beforeEach(() => {
-                    cy.get("button").contains("Favorites").click();
-                });
-                it("navigates from Favourites to Home and then to movie details page", () => {
-                    
-                    cy.get("button").contains("Home").click();
-                    cy.url().should("include", `/`);
-
-                    cy.get(".MuiCardActions-root").eq(0).contains("More Info").click();
-                    cy.url().should("include", `/movies/${movies[0].id}`);
-                });
+                cy.get(".MuiCardActions-root").eq(0).contains("More Info").click();
+                cy.url().should("include", `/movies/${movies[0].id}`);
             });
         });
 
-        describe("The forward/backward links", () => {
+        context("When there are no movies in the favourites", () => {
             beforeEach(() => {
-                cy.get(".MuiCardActions-root").eq(0).contains("More Info").click();
+                cy.get("button").contains("Favorites").click();
             });
-            it("navigates between the movies detail page and the Home page.", () => {
-                cy.get("svg[data-testid='ArrowBackIcon'").click();
-                cy.url().should("not.include", `/movies/${movies[0].id}`);
-                cy.get("svg[data-testid='ArrowForwardIcon'").click();
+            it("navigates from Favourites to Home and then to movie details page", () => {
+
+                cy.get("button").contains("Home").click();
+                cy.url().should("include", `/`);
+
+                cy.get(".MuiCardActions-root").eq(0).contains("More Info").click();
                 cy.url().should("include", `/movies/${movies[0].id}`);
             });
         });
     });
+
+    describe("The forward/backward links", () => {
+        beforeEach(() => {
+            cy.get(".MuiCardActions-root").eq(0).contains("More Info").click();
+        });
+        it("navigates between the movies detail page and the Home page.", () => {
+            cy.get("svg[data-testid='ArrowBackIcon'").click();
+            cy.url().should("not.include", `/movies/${movies[0].id}`);
+            cy.get("svg[data-testid='ArrowForwardIcon'").click();
+            cy.url().should("include", `/movies/${movies[0].id}`);
+        });
+    });
+});
